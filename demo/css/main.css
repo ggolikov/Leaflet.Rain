@@ -1,0 +1,62 @@
+@import'../../src/L.Rain.css';
+
+html, body {
+    width: 100%;
+    margin: 0px;
+}
+
+body {
+    background-color: #F3F3F3;
+    background-color: white;
+    font-family: Arial;
+}
+
+#wrap {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+#left-panel {
+    /* display: none; */
+    width: 350px;
+    height: 100%;
+    float: left;
+}
+
+#map {
+    height: 100%;
+}
+
+#content {
+    margin: auto;
+}
+
+.header {
+    text-align: center;
+}
+
+.controller-container {
+    margin: 0 40px 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.controller-container label {
+    width: calc(100% - 90px);
+    text-align: left;
+}
+
+.controller-container input {
+    width: 50px
+}
+
+.controller-container div {
+    width: 40px
+}
+
+.controller {
+    margin: 4px 0;
+    width: 20%;
+}
