@@ -170,6 +170,18 @@ var Rain = L.Polygon.extend({
         this._redraw();
     },
 
+    setColor: function (color) {
+        var gl = this._gl,
+            colorLocation = gl.getUniformLocation(this.shaderProgram, "u_color");
+
+        if (color[0] === '#') {
+            color.replace('#', '0x');
+            this.options.color = color;
+            gl.uniform1i(colorLocation, color);
+            this._redraw();
+        }
+    },
+
     _initCanvas: function () {
         var canvas = L.DomUtil.create('canvas', 'webgl-canvas leaflet-layer');
 
@@ -212,7 +224,8 @@ var Rain = L.Polygon.extend({
             lengthLocation = gl.getUniformLocation(this.shaderProgram, "u_legnth"),
             lengthLocation = gl.getUniformLocation(this.shaderProgram, "u_length"),
             intervalLocation = gl.getUniformLocation(this.shaderProgram, "u_interval"),
-            speedLocation = gl.getUniformLocation(this.shaderProgram, "u_speed");
+            speedLocation = gl.getUniformLocation(this.shaderProgram, "u_speed"),
+            colorLocation = gl.getUniformLocation(this.shaderProgram, "u_color");
 
         // угол дождя
         gl.uniform1f(angleLocation, this.options.angle * Math.PI / 180 - Math.PI / 2.0);
@@ -220,7 +233,12 @@ var Rain = L.Polygon.extend({
         gl.uniform1f(spacingLocation, this.options.spacing);
         gl.uniform1f(lengthLocation, this.options.length);
         gl.uniform1f(intervalLocation, this.options.interval);
-        gl.uniform1f(speedLocation, this.options.speed);
+        gl.uniform1i(speedLocation, this.options.speed);
+
+        if (this.options.color[0] === '#') {
+            this.options.color.replace('#', '0x');
+        }
+        gl.uniform1f(colorLocation, this.options.color);
 
         this.render();
     },

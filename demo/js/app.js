@@ -4,6 +4,8 @@ import { points } from './points';
 
 var L = global.L || requires('leaflet');
 
+$('#colorpicker').colorpicker();
+
 var osm = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
         maxZoom: 18,
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
@@ -18,8 +20,9 @@ var osm = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{
     lengthController = document.getElementsByClassName('length-controller')[0],
     intervalController = document.getElementsByClassName('interval-controller')[0],
     speedController = document.getElementsByClassName('speed-controller')[0],
+    colorpickerController = document.querySelector('#colorpicker input'),
     options = {
-        // color: 0xDD1D36,
+        color: colorpickerController.value,
         angle: +angleController.value,          // deg
         width: +widthController.value,          // px
         spacing: +spacingController.value,      // px
@@ -31,8 +34,6 @@ var osm = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{
 // var polygon = L.polygon(_points, {}).addTo(lmap);
 // window.polygon = polygon;
 window.lmap = lmap;
-console.log(points);
-console.log(_points);
 window.rain = rain(_points, options).addTo(lmap);
 
 angleController.addEventListener('change', function (e) {
@@ -69,6 +70,14 @@ lmap.on('click', e => {
     let p = lmap.options.crs.project(e.latlng);
     console.log(p);
 })
+
+console.log(colorpickerController.value);
+$('#colorpicker').on('colorpickerChange', e => {
+    var color = e.color.toHexString();
+    console.log(color);
+
+    window.rain.setColor(color);
+});
 
 function reverseData(array) {
     return array.map(coords => {

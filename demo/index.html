@@ -4,45 +4,59 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leaflet Rain demo</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
     <link rel="stylesheet" type="text/css" href="./css/main.css"/>
-    <!-- <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet-src.js"></script> -->
-    <script src="./js/leaflet-src.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css"/>
+    <link href="./css/bootstrap-colorpicker.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+      integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+      crossorigin=""/>
+    <script src="./js/jquery-3.3.1.min.js"></script>
+    <script src="./js/bootstrap.bundle.min.js"></script>
+    <script src="./js/bootstrap-colorpicker.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+      integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+      crossorigin=""></script>
 </head>
 <body>
     <div id="wrap">
         <div id="left-panel">
-            <div class="header">
-                <h2>Leaflet.Rain</h2>
-                <div class="controller-container">
-                    <label>Angle: </label>
-                    <input class="controller angle-controller" type="number" value="70"/>
-                    <div class="unit">deg</div>
+            <div class="container">
+                <h2 class="header">Leaflet.Rain</h2>
+                <div class="row">
+                    <label class="col-sm-6 col-form-label">Angle</label>
+                    <input class="mb-1 col-sm-4 mb-3 form-control angle-controller" type="number" value="80"/>
+                    <label class="col-sm-2 col-form-label">deg</label>
                 </div>
-                <div class="controller-container">
-                    <label>Width: </label>
-                    <input class="controller width-controller" type="number" value="1" min="0"/>
-                    <div class="unit">px</div>
+                <div class="row">
+                    <label class="col-sm-6 col-form-label">Width</label>
+                    <input class="col-sm-4 mb-3 form-control width-controller" type="number" value="1" min="1"/>
+                    <label class="col-sm-2 col-form-label">px</label>
                 </div>
-                <div class="controller-container">
-                    <label>Spacing: </label>
-                    <input class="controller spacing-controller" type="number" value="10" min="0"/>
-                    <div class="unit">px</div>
+                <div class="row">
+                    <label class="col-sm-6 col-form-label">Spacing</label>
+                    <input class="col-sm-4 mb-3 form-control spacing-controller" type="number" value="10" min="1"/>
+                    <label class="col-sm-2 col-form-label">px</label>
                 </div>
-                <div class="controller-container">
-                    <label>Drop length: </label>
-                    <input class="controller length-controller" type="number" value="5" min="0"/>
-                    <div class="unit">px</div>
+                <div class="row">
+                    <label class="col-sm-6 col-form-label">Drop length</label>
+                    <input class="col-sm-4 mb-3 form-control length-controller" type="number" value="3" min="1"/>
+                    <label class="col-sm-2 col-form-label">px</label>
                 </div>
-                <div class="controller-container">
-                    <label>Drop interval: </label>
-                    <input class="controller interval-controller" type="number" value="10" min="0"/>
-                    <div class="unit">px</div>
+                <div class="row">
+                    <label class="col-sm-6 col-form-label">Drop interval</label>
+                    <input class="col-sm-4 mb-3 form-control interval-controller" type="number" value="10" min="1"/>
+                    <label class="col-sm-2 col-form-label">px</label>
                 </div>
-                <div class="controller-container">
-                    <label>Speed: </label>
-                    <input class="controller speed-controller" type="number" value="0.7" min="0" step="0.1"/>
-                    <div class="unit">x</div>
+                <div class="row">
+                    <label class="col-sm-6 col-form-label">Speed</label>
+                    <input class="col-sm-4 mb-3 form-control speed-controller" type="number" value="1" min="0" step="0.1"/>
+                    <label class="col-sm-2 col-form-label">x</label>
+                </div>
+                <div id="colorpicker" class="input-group" title="Using color option">
+                  <input type="text" class="form-control input-sm" value="#DD0F20FF"/>
+                  <span class="input-group-append">
+                    <span class="input-group-text colorpicker-input-addon"><i></i></span>
+                  </span>
                 </div>
             </div>
             <div id="content">
