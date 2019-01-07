@@ -12,33 +12,35 @@ uniform int u_color;
 float drawCoord(float coord, float fill, float gap) {
     float patternLength = fill + gap;
     float modulo = mod(coord, patternLength);
+
     return step(modulo, patternLength - gap);
 }
 
+vec3 getColor(int color) {
+    float red = float(color / 256 / 256);
+    float green = float(color / 256 - int(red * 256.0));
+    float blue = float(color - int(red * 256.0 * 256.0) - int(green * 256.0));
+
+    return vec3(red / 255.0, green / 255.0, blue / 255.0);
+}
+
 void main() {
-    float rainStripeWidth = 2.0;
-    float spacingInClipCoordinates = u_spacing/u_resolution.x;
-
-    float red = float(u_color / 256 / 256);
-    float green = float(u_color / 256 - int(red * 256.0));
-    float blue = float(u_color - int(red * 256.0 * 256.0) - int(green * 256.0));
-
     mat2 rotationMatrix = mat2(
         cos(u_angle), -sin(u_angle),
         sin(u_angle), cos(u_angle)
     );
 
-    vec2 rotatedfragCoord = rotationMatrix * gl_FragCoord.xy;
-    float pos = -1.0 / ( gl_FragCoord.y / u_resolution.y);
+    vec2 rotatedFragCoord = rotationMatrix * gl_FragCoord.xy;
+
     float yShift = u_time * u_speed;
-    float drawX = drawCoord(rotatedfragCoord.x, u_width, u_spacing);
-    float drawY = drawCoord(rotatedfragCoord.y + yShift, u_length, u_interval);
+    float drawX = drawCoord(rotatedFragCoord.x, u_width, u_spacing);
+    float drawY = drawCoord(rotatedFragCoord.y + yShift, u_length, u_interval);
 
     float draw = drawX * drawY;
 
-    if (draw < 0.9) {
-        discard;
-    }
+    if (!bool(draw)) discard;
 
-    gl_FragColor = vec4(red / 255.0, green / 255.0, blue / 255.0, 1.0);
+    vec3 color = getColor(u_color);
+
+    gl_FragColor = vec4(color, 1.0);
 }

@@ -1,7 +1,7 @@
 {
-  "name": "Leaflet.Rain",
+  "name": "leaflet-rain",
   "version": "0.1.0",
-  "description": "Leaflet WebGL plugin for rain visualization",
+  "description": "WebGl rain animation for Leaflet maps",
   "repository": "https://github.com/ggolikov/Leaflet.Rain",
   "main": "./src/L.Rain.js",
   "author": "Grigory Golikov gr.golikov@gmail.com",
