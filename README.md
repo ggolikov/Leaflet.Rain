@@ -1,16 +1,11 @@
 # Leaflet.Rain
 
-WebGl rain animation for Leaflet maps
+WebGL rain animation for Leaflet maps. Extends L.Polygon.
 
-Example
-[comment]: <Example image>  
-<!-- ![l viewpoint example](https://cloud.githubusercontent.com/assets/17549928/21459122/bb3770bc-c94c-11e6-841f-d1ec4e6073a5.png) -->
-
-## [Demo]()
+## [Demo](https://ggolikov.github.io/Leaflet.Rain)
 
 ## Installation
-works with leaflet@1.4.0
-
+works with leaflet@1.0.0 and higher
 ```
 npm install leaflet
 npm install leaflet-rain
@@ -22,7 +17,6 @@ import 'leaflet-rain';
 ```
 
 ## Usage
-Comment
 
 ```javascript
 let map = L.map(...);
@@ -58,7 +52,7 @@ color|`String`|`Oxa6b3e9`| Rain color hex value
 
 ### Methods
 Method|Description
-------|-------|-----------
+------|-------
 setAngle(`Number`)|Sets rain angle (degrees).
 setWidth(`Number`)|Sets drop width (px).
 setSpacing(`Number`)|Sets x-spacing between drops (px).
