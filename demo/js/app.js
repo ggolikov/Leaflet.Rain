@@ -1,6 +1,5 @@
 import '../../src/L.Rain';
 import { points } from './points';
-import L from 'leaflet';
 
 $('#colorpicker').colorpicker();
 
@@ -30,7 +29,7 @@ var osm = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{
         color:      rgb2hex(colorpickerController.value)
     },
     rain = L.rain(points, options).addTo(lmap);
-console.log(rain)
+
 angleController.addEventListener('change', function (e) {
     var angle = Number(e.target.value);
     rain.setAngle(angle);
