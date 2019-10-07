@@ -3,8 +3,6 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
     // import matrixUtils from './matrixUtils';
     
     var glsl = require('glslify');
-    // var vertexShader = glsl('./shaders/vertex.glsl');
-    // var fragmentShader = glsl('./shaders/fragment.glsl');
     var vertexShader = glsl(["#define GLSLIFY 1\nuniform mat4 u_matrix;\nattribute vec2 a_position;\n\nvoid main() {\n    gl_Position = u_matrix * vec4(a_position, 0.0, 1.0);\n    gl_PointSize = 10.0;\n}\n"]);
     var fragmentShader = glsl(["precision mediump float;\n#define GLSLIFY 1\nuniform vec2 u_resolution;\nuniform float u_angle;\nuniform float u_width;\nuniform float u_spacing;\nuniform float u_length;\nuniform float u_interval;\nuniform float u_speed;\nuniform float u_time;\nuniform int u_color;\n\nfloat drawCoord(float coord, float fill, float gap) {\n    float patternLength = fill + gap;\n    float modulo = mod(coord, patternLength);\n\n    return step(modulo, patternLength - gap);\n}\n\nvec3 getColor(int color) {\n    float red = float(color / 256 / 256);\n    float green = float(color / 256 - int(red * 256.0));\n    float blue = float(color - int(red * 256.0 * 256.0) - int(green * 256.0));\n\n    return vec3(red / 255.0, green / 255.0, blue / 255.0);\n}\n\nvoid main() {\n    mat2 rotationMatrix = mat2(\n        cos(u_angle), -sin(u_angle),\n        sin(u_angle), cos(u_angle)\n    );\n\n    vec2 rotatedFragCoord = rotationMatrix * gl_FragCoord.xy;\n\n    float yShift = u_time * u_speed;\n    float drawX = drawCoord(rotatedFragCoord.x, u_width, u_spacing);\n    float drawY = drawCoord(rotatedFragCoord.y + yShift, u_length, u_interval);\n\n    float draw = drawX * drawY;\n\n    if (!bool(draw)) discard;\n\n    vec3 color = getColor(u_color);\n\n    gl_FragColor = vec4(color, 1.0);\n}\n"]);
     
@@ -105,6 +103,12 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
     
             gl.uniform1f(timeLocation, time);
             this.drawScene();
+        },
+    
+        setLatLngs: function (latlngs) {
+            this._latlngs = latlngs;
+            // console.log(latlngs);
+            this._redraw();
         },
     
         setAngle: function (angle) {
@@ -276,25 +280,27 @@ require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c=
         },
     
         _updateMatrix: function (gl) {
-            var matrixLocation = gl.getUniformLocation(this.shaderProgram, "u_matrix"),
-                map = this._map,
-                center = map.getCenter(),
-                zoom = map.getZoom(),
-                crs = map.options.crs,
-                CRSCenter = crs.project(center),
-                { x, y } = CRSCenter,
-                pxSize = crs.transformation.untransform(L.point([1,1]), 1),
-                mapSize = map.getSize(),
-                CRSUnitsPerPx = mapSize.divideBy( crs.scale(zoom) ),
-                half = pxSize.scaleBy(CRSUnitsPerPx),
-                transformMatrix = matrixUtils.identityMatrix(),
-                translationMatrix = matrixUtils.translationMatrix([-x, - y, 0]),
-                scaleMatrix = matrixUtils.scaleMatrix([1/half.x, -1/half.y, 1]);
+            if (this._map) {
+                var matrixLocation = gl.getUniformLocation(this.shaderProgram, "u_matrix"),
+                    map = this._map,
+                    center = map.getCenter(),
+                    zoom = map.getZoom(),
+                    crs = map.options.crs,
+                    CRSCenter = crs.project(center),
+                    { x, y } = CRSCenter,
+                    pxSize = crs.transformation.untransform(L.point([1,1]), 1),
+                    mapSize = map.getSize(),
+                    CRSUnitsPerPx = mapSize.divideBy( crs.scale(zoom) ),
+                    half = pxSize.scaleBy(CRSUnitsPerPx),
+                    transformMatrix = matrixUtils.identityMatrix(),
+                    translationMatrix = matrixUtils.translationMatrix([-x, - y, 0]),
+                    scaleMatrix = matrixUtils.scaleMatrix([1/half.x, -1/half.y, 1]);
     
-            transformMatrix = matrixUtils.matrixMultiply(transformMatrix, translationMatrix);
-            transformMatrix = matrixUtils.matrixMultiply(transformMatrix, scaleMatrix);
+                transformMatrix = matrixUtils.matrixMultiply(transformMatrix, translationMatrix);
+                transformMatrix = matrixUtils.matrixMultiply(transformMatrix, scaleMatrix);
     
-            gl.uniformMatrix4fv(matrixLocation, false, transformMatrix);
+                gl.uniformMatrix4fv(matrixLocation, false, transformMatrix);
+            }
         },
     
         _reset: function () {
