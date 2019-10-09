@@ -41,7 +41,7 @@ var osm = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{
   // times
   color: rgb2hex(colorpickerController.value)
 },
-    rain = L.rain(_points.points, options).addTo(lmap);
+	rain = L.rain(_points.points, options).addTo(lmap);
 angleController.addEventListener('change', function (e) {
   var angle = Number(e.target.value);
   rain.setAngle(angle);
